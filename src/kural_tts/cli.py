@@ -14,7 +14,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-f", "--file", help="Read text from a UTF-8 file instead.")
     p.add_argument("-o", "--output", default="out.wav", help="Output WAV path (default: out.wav).")
     p.add_argument("--lang", choices=["auto", "ta", "en"], default="auto")
-    p.add_argument("--speed", type=float, default=1.0)
+    p.add_argument("--speed", type=float, default=1.0, help="> 1 speaks faster.")
+    p.add_argument("--noise-scale", type=float, help="Expressiveness (0 = flattest, most stable).")
+    p.add_argument("--model", help="Voice directory with model.onnx + config.json.")
+    p.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")
     p.add_argument(
         "--normalize",
         action="store_true",
@@ -53,7 +56,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     try:
-        path = KuralTTS().save(text, args.output, lang=args.lang, speed=args.speed)
+        tts = KuralTTS(model_path=args.model, device=args.device)
+        path = tts.save(
+            text, args.output, lang=args.lang, speed=args.speed, noise_scale=args.noise_scale
+        )
     except ModelNotAvailableError as e:
         print(f"error: {e}", file=sys.stderr)
         return 1
