@@ -1,0 +1,81 @@
+id	category	phenomenon	text	reference_ta_script
+en_001	en	statement	The meeting has been moved to Thursday afternoon.	
+en_002	en	question_wh	What time does the next train to Coimbatore leave?	
+en_003	en	question_yn	Would you like me to send the receipt to your email?	
+en_004	en	currency	Your order total is ₹2,499 including taxes.	
+en_005	en	currency_lakh	The approved loan amount is ₹1,50,000.	
+en_006	en	date_time	Your appointment is on 15th August 2026 at 10:30 AM.	
+en_007	en	phone	Please call us at 044-2345-6789.	
+en_008	en	abbreviation	Dr. Ramesh will see you in the OPD on the 2nd floor.	
+en_009	en	acronym	Your SBI account is linked to UPI, and the OTP is valid for 5 minutes.	
+en_010	en	name_place	Priya Venkatesh from Tiruchirappalli has joined the call.	
+en_011	en	long	If you are unable to attend the session on Saturday, please let us know by Friday evening so that we can offer your seat to someone on the waiting list.	
+en_012	en	short_reply	Okay, got it.	
+en_013	en	exclamation	That's wonderful news, congratulations!	
+en_014	en	list	You will need your Aadhaar card, PAN card, and two passport-size photos.	
+en_015	en	percentage	The interest rate is 8.5% per annum.	
+en_016	en	time_range	The store is open from 9 AM to 9 PM, Monday to Saturday.	
+en_017	en	technical	Please restart the Wi-Fi router and check whether the LED turns green.	
+en_018	en	quotation	"Sorry," she said, "the line is busy right now."	
+en_019	en	question_tag	You've already paid the bill, haven't you?	
+en_020	en	email	Please send the documents to support@example.com before Monday.	
+ta_001	ta	statement	இன்று சென்னையில் லேசான மழை பெய்ய வாய்ப்பு உள்ளது.	
+ta_002	ta	question_wh	அடுத்த பேருந்து எத்தனை மணிக்கு வரும்?	
+ta_003	ta	question_yn	உங்கள் முகவரியை உறுதிப்படுத்த விரும்புகிறீர்களா?	
+ta_004	ta	currency	உங்கள் கட்டணம் 2,499 ரூபாய்.	
+ta_005	ta	tamil_numerals	இந்த நூலில் ௨௫ அத்தியாயங்கள் உள்ளன.	
+ta_006	ta	date_time	உங்கள் சந்திப்பு ஆகஸ்ட் 15ஆம் தேதி காலை 10:30 மணிக்கு.	
+ta_007	ta	phone	எங்களை 044-2345-6789 என்ற எண்ணில் அழைக்கவும்.	
+ta_008	ta	abbreviation	டாக். ரமேஷ் இன்று மாலை 5 மணிக்கு வருவார்.	
+ta_009	ta	name_place	திருச்சிராப்பள்ளியைச் சேர்ந்த பிரியா வெங்கடேஷ் அழைப்பில் இணைந்துள்ளார்.	
+ta_010	ta	zha_retroflex	வாழைப்பழம் கீழே விழுந்தது.	
+ta_011	ta	gemination_rra	பக்கத்து வீட்டுக்காரர் நேற்று வெற்றி பெற்றார்.	
+ta_012	ta	long	தமிழ்நாட்டின் தலைநகரான சென்னை, அதன் நீண்ட கடற்கரை, பழமையான கோயில்கள் மற்றும் சுவையான உணவுகளுக்காக உலகம் முழுவதும் அறியப்படுகிறது.	
+ta_013	ta	short_reply_colloquial	சரி, புரிஞ்சுது.	
+ta_014	ta	question_colloquial	நீங்க எப்போ வீட்டுக்கு வருவீங்க?	
+ta_015	ta	statement_colloquial	நான் இப்போ கொஞ்சம் வேலையா இருக்கேன், அப்புறம் பேசலாமா?	
+ta_016	ta	exclamation	அருமை! ரொம்ப நன்றி!	
+ta_017	ta	grantha	ஜனவரி மாதம் ஸ்ரீ கிருஷ்ணா ஹோட்டலில் விழா நடக்கும்.	
+ta_018	ta	list	அரிசி, பருப்பு, எண்ணெய், சர்க்கரை எல்லாம் வாங்கணும்.	
+ta_019	ta	percentage	வட்டி விகிதம் 8.5 சதவீதம்.	
+ta_020	ta	time_range	கடை காலை 9 மணி முதல் இரவு 9 மணி வரை திறந்திருக்கும்.	
+cs_001	cs	en_in_ta_latin	நாளைக்கு meeting 10 மணிக்கு இருக்கு.	
+cs_002	cs	en_in_ta_tamil_script	நாளைக்கு மீட்டிங் பத்து மணிக்கு இருக்கு.	
+cs_003	cs	acronym	உங்க OTP number-ஐ யாருக்கும் share பண்ணாதீங்க.	
+cs_004	cs	en_in_ta_latin	Payment successful ஆயிடுச்சு, receipt உங்க email-க்கு அனுப்பிட்டோம்.	
+cs_005	cs	ta_in_en	I'll come by evening, சரியா?	
+cs_006	cs	ta_in_en	Please bring the பூஜை items to the hall.	
+cs_007	cs	ta_in_en	Your order will reach by tomorrow, கவலைப்படாதீங்க.	
+cs_008	cs	en_in_ta_latin	நான் office-ல இருந்து ஆறு மணிக்கு கிளம்புவேன்.	
+cs_009	cs	currency	Total amount ₹1,250 ஆகும், UPI மூலமா pay பண்ணலாம்.	
+cs_010	cs	question_yn	நீங்க already register பண்ணிட்டீங்களா?	
+cs_011	cs	question_yn	Doctor appointment-ஐ next Monday-க்கு reschedule பண்ணட்டுமா?	
+cs_012	cs	clause_switch	Traffic ரொம்ப அதிகமா இருக்கு, so I'll be fifteen minutes late.	
+cs_013	cs	units	Basically, இந்த plan-ல data unlimited, ஆனா speed 2 GB-க்கு அப்புறம் குறையும்.	
+cs_014	cs	exclamation	Thank you so much, ரொம்ப helpful-ஆ இருந்துச்சு!	
+cs_015	cs	date	Your EMI due date ஆகஸ்ட் 5ஆம் தேதி.	
+cs_016	cs	name	Mr. Senthil Kumar உங்களை call பண்ணச் சொன்னார்.	
+cs_017	cs	long	Sir, உங்க account-ல KYC update பண்ணலைன்னா, next week-ல இருந்து transactions temporarily block ஆகலாம், அதனால இன்னைக்கே branch-க்கு போயிடுங்க.	
+cs_018	cs	short_reply	Okay, சரி, done!	
+cs_019	cs	place	Weekend-ல family-ஓட மகாபலிபுரம் போகலாம்னு plan பண்ணிருக்கோம்.	
+cs_020	cs	loanwords_tamil_script	உங்க மொபைல்ல ஆப்பை அப்டேட் பண்ணுங்க.	
+tg_001	tanglish	statement_question	naalaikku office ku varen, ok ah?	நாளைக்கு office-க்கு வரேன், ok-ஆ?
+tg_002	tanglish	question_colloquial	enna panra? saptiya?	என்ன பண்ற? சாப்டியா?
+tg_003	tanglish	long	romba thanks, nee illaina naan maatikitu irupen	ரொம்ப thanks, நீ இல்லைன்னா நான் மாட்டிக்கிட்டு இருப்பேன்
+tg_004	tanglish	statement	unga order innaiku saayangalam deliver aagum	உங்க order இன்னைக்கு சாயங்காலம் deliver ஆகும்
+tg_005	tanglish	request	konjam wait pannunga, naan check panni solren	கொஞ்சம் wait பண்ணுங்க, நான் check பண்ணி சொல்றேன்
+tg_006	tanglish	question_wh	neenga epdi irukeenga?	நீங்க எப்படி இருக்கீங்க?
+tg_007	tanglish	currency	amount 500 rupees, gpay la anupunga	amount 500 rupees, GPay-ல அனுப்புங்க
+tg_008	tanglish	statement	inniki mazhai varum pola iruku	இன்னிக்கு மழை வரும் போல இருக்கு
+tg_009	tanglish	short_reply	seri, naan apram call panren	சரி, நான் அப்புறம் call பண்றேன்
+tg_010	tanglish	request	unga address correct ah nu confirm pannunga	உங்க address correct-ஆ-னு confirm பண்ணுங்க
+tg_011	tanglish	long	enakku theriyala, neenga customer care ku phone pannunga	எனக்கு தெரியல, நீங்க customer care-க்கு phone பண்ணுங்க
+tg_012	tanglish	statement	vandi la petrol illa, bunk ku poganum	வண்டில petrol இல்ல, bunk-க்கு போகணும்
+tg_013	tanglish	time	meeting 3 mani ku start aagum	meeting 3 மணிக்கு start ஆகும்
+tg_014	tanglish	request	unga password ah yaar kittayum sollaadheenga	உங்க password-ஐ யார் கிட்டயும் சொல்லாதீங்க
+tg_015	tanglish	greeting_name	vanakkam, Kural customer support la irundhu pesuren	வணக்கம், Kural customer support-ல இருந்து பேசுறேன்
+tg_016	tanglish	exclamation	idhu romba azhaga iruku!	இது ரொம்ப அழகா இருக்கு!
+tg_017	tanglish	question_yn	ungalukku vera edhavadhu help venuma?	உங்களுக்கு வேற ஏதாவது help வேணுமா?
+tg_018	tanglish	mixed_heavy	train late aagudhu, oru half an hour aagum	train late ஆகுது, ஒரு half an hour ஆகும்
+tg_019	tanglish	place_names	naan Chennai la Velachery la irukken	நான் Chennai-ல Velachery-ல இருக்கேன்
+tg_020	tanglish	ambiguous_homograph	pal vali romba iruku, dentist kitta poganum	பல் வலி ரொம்ப இருக்கு, dentist கிட்ட போகணும்
