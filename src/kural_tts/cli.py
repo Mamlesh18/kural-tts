@@ -15,6 +15,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-o", "--output", default="out.wav", help="Output WAV path (default: out.wav).")
     p.add_argument("--lang", choices=["auto", "ta", "en"], default="auto")
     p.add_argument("--speed", type=float, default=1.0)
+    p.add_argument(
+        "--normalize",
+        action="store_true",
+        help="Only run the text frontend and print language-tagged spans (no audio).",
+    )
     p.add_argument("--version", action="version", version=f"kural-tts {__version__}")
     return p
 
@@ -32,6 +37,10 @@ def main(argv: list[str] | None = None) -> int:
 
     from kural_tts.api import KuralTTS, ModelNotAvailableError
 
+    if args.normalize:
+        _print_spans(KuralTTS().normalize(text, lang=args.lang))
+        return 0
+
     try:
         path = KuralTTS().save(text, args.output, lang=args.lang, speed=args.speed)
     except ModelNotAvailableError as e:
@@ -39,6 +48,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     print(path)
     return 0
+
+
+def _print_spans(spans) -> None:
+    if hasattr(sys.stdout, "reconfigure"):  # Windows consoles default to a legacy code page
+        sys.stdout.reconfigure(encoding="utf-8")
+    for span in spans:
+        print(f"[{span.lang}] {span.text}")
 
 
 if __name__ == "__main__":
