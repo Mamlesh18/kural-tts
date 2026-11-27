@@ -20,6 +20,7 @@ from kural_tts.text.tokenize import Token, tokenize
 class Span:
     text: str
     lang: str  # "ta" | "en"
+    joined: bool = False  # glued to the previous span with no space (office + க்கு)
 
 
 def analyze(text: str, lang: LangMode = "auto") -> list[Token]:
@@ -50,7 +51,7 @@ def _joiner(tok: Token) -> str:
 
 def to_spans(tokens: list[Token]) -> list[Span]:
     """Group tokens into maximal same-language spans. Punctuation joins the preceding span."""
-    spans: list[list] = []  # [text, lang]
+    spans: list[list] = []  # [text, lang, joined]
     for tok in tokens:
         lang = tok.lang or (spans[-1][1] if spans else None)
         if lang is None:  # leading punctuation: attach to the first real token later
@@ -58,8 +59,8 @@ def to_spans(tokens: list[Token]) -> list[Span]:
         if spans and spans[-1][1] == lang:
             spans[-1][0] += _joiner(tok) + tok.text
         else:
-            spans.append([tok.text, lang])
-    return [Span(text.strip(), lang) for text, lang in spans if text.strip()]
+            spans.append([tok.text, lang, bool(spans) and _joiner(tok) == ""])
+    return [Span(text.strip(), lang, joined) for text, lang, joined in spans if text.strip()]
 
 
 def normalize(text: str, lang: LangMode = "auto") -> list[Span]:
