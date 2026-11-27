@@ -41,6 +41,7 @@ def test_time_with_and_without_meridiem():
 
 
 def test_abbreviation_consumes_dot():
-    assert first("Dr. Ramesh") == ("doctor", 1)
+    assert first("Dr. Ramesh") == ("Doctor", 1)
+    assert first("etc.") == ("et cetera", 1)
     assert first("No. 5") == ("number", 1)
     assert first("No.")[1] == 0  # sentence-final "No." is just the word

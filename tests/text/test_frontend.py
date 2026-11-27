@@ -15,7 +15,7 @@ from kural_tts.text.tamil_script import has_tamil
         ("The approved loan amount is ₹1,50,000.",
          "The approved loan amount is one lakh fifty thousand rupees."),
         ("Dr. Ramesh will see you on the 2nd floor.",
-         "doctor Ramesh will see you on the second floor."),
+         "Doctor Ramesh will see you on the second floor."),
         ("Your appointment is on 15th August 2026 at 10:30 AM.",
          "Your appointment is on fifteenth August two thousand twenty-six at ten thirty A M."),
         ("naalaikku office ku varen, ok ah?", "நாளைக்கு officeக்கு வரேன், okஆ?"),
