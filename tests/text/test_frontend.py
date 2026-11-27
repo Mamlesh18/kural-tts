@@ -49,3 +49,7 @@ def test_spans_never_mix_scripts():
             assert not has_tamil(span.text), span
         else:
             assert not any(c.isascii() and c.isalpha() for c in span.text), span
+
+
+def test_tanglish_particle_attaches_to_number():
+    assert normalize("naalaikku 10:30 ku varen")[0] == Span("நாளைக்கு பத்தரைக்கு வரேன்", "ta")
