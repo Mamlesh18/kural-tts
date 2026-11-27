@@ -1,11 +1,9 @@
-"""Public Python API.
-
-The model is not trained yet, so ``synthesize`` raises ``ModelNotAvailableError``. The signature is
-fixed now so the rest of the stack (CLI, server, agent plugin, tests) can be built against it.
-"""
+"""Public Python API."""
 
 from __future__ import annotations
 
+import os
+import threading
 from collections.abc import Iterator
 from pathlib import Path
 from typing import Literal
@@ -16,10 +14,12 @@ LangMode = Literal["auto", "ta", "en"]
 Device = Literal["auto", "cpu", "cuda"]
 
 SUPPORTED_VOICES = ("sahithi",)
+SENTENCE_PAUSE_SEC = 0.12  # silence inserted between sentences in synthesize()
+MAX_CHARS = 5000
 
 
 class ModelNotAvailableError(RuntimeError):
-    """Raised when no trained Kural-TTS model is available yet."""
+    """Raised when no trained Kural-TTS voice can be found or downloaded."""
 
 
 class KuralTTS:
@@ -29,6 +29,9 @@ class KuralTTS:
 
         tts = KuralTTS(voice="sahithi")
         audio, sr = tts.synthesize("நாளைக்கு meeting 10 மணிக்கு.")
+
+    The voice is loaded on first use, from ``model_path`` (or the ``KURAL_TTS_MODEL`` environment
+    variable) if given, otherwise downloaded from the Hugging Face Hub and cached.
     """
 
     def __init__(
@@ -41,29 +44,116 @@ class KuralTTS:
             raise ValueError(f"Unknown voice {voice!r}; available: {', '.join(SUPPORTED_VOICES)}")
         self.voice = voice
         self.device = device
-        self.model_path = Path(model_path) if model_path is not None else None
-        self._session = None  # onnxruntime.InferenceSession, loaded lazily
+        env_path = os.environ.get("KURAL_TTS_MODEL")
+        chosen = model_path if model_path is not None else env_path
+        self.model_path = Path(chosen) if chosen else None
+        self._voice = None
+        self._lock = threading.Lock()
+
+    # ------------------------------------------------------------------ model loading
+    def _load(self):
+        if self._voice is None:
+            with self._lock:
+                if self._voice is None:
+                    from kural_tts.runtime import OnnxVoice
+
+                    self._voice = OnnxVoice(self._resolve_model_dir(), self.device)
+        return self._voice
+
+    def _resolve_model_dir(self) -> Path:
+        if self.model_path is not None:
+            if not (self.model_path / "model.onnx").exists():
+                raise ModelNotAvailableError(f"no model.onnx in {self.model_path}")
+            return self.model_path
+        from kural_tts import hub
+
+        try:
+            return hub.download_model()
+        except Exception as e:  # not released yet, offline, or network error
+            raise ModelNotAvailableError(
+                f"Could not load the {self.voice!r} voice: {e}. Pass model_path= or set "
+                "KURAL_TTS_MODEL to a directory containing model.onnx and config.json."
+            ) from e
 
     @property
     def sample_rate(self) -> int:
-        return 22050
+        return self._load().sample_rate
+
+    @property
+    def providers(self) -> list[str]:
+        """ONNX Runtime execution providers in use (e.g. CUDA, CPU)."""
+        return self._load().providers
+
+    # ------------------------------------------------------------------ synthesis
+    def _synth_sentence(
+        self, sentence: str, lang: LangMode, speed: float, noise_scale: float | None
+    ) -> np.ndarray:
+        from kural_tts.text.g2p import text_to_ids
+
+        ids, langs = text_to_ids(sentence, lang)
+        if len(ids) <= 2:  # only BOS/EOS: nothing speakable (e.g. lone punctuation)
+            return np.zeros(0, dtype=np.float32)
+        return self._load().run(ids, langs, noise_scale=noise_scale, length_scale=1.0 / speed)
 
     def synthesize(
         self,
         text: str,
         lang: LangMode = "auto",
         speed: float = 1.0,
-        noise_scale: float = 0.667,
-        noise_w: float = 0.8,
+        noise_scale: float | None = None,
     ) -> tuple[np.ndarray, int]:
-        """Synthesize ``text`` and return ``(float32 mono waveform, sample_rate)``."""
+        """Synthesize ``text`` and return ``(float32 mono waveform, sample_rate)``.
+
+        ``speed`` > 1 speaks faster. ``noise_scale`` controls expressiveness (default comes from
+        the voice; 0 gives the most stable, flattest reading).
+        """
         _validate_text(text)
         if speed <= 0:
             raise ValueError("speed must be > 0")
-        raise ModelNotAvailableError(
-            "No Kural-TTS model has been released yet. Training is in progress; see docs/PLAN.md."
-        )
+        from kural_tts.text.segment import split_sentences
 
+        voice = self._load()
+        pause = np.zeros(int(SENTENCE_PAUSE_SEC * voice.sample_rate), dtype=np.float32)
+        pieces: list[np.ndarray] = []
+        for sentence in split_sentences(text):
+            audio = self._synth_sentence(sentence, lang, speed, noise_scale)
+            if audio.size:
+                if pieces:
+                    pieces.append(pause)
+                pieces.append(audio)
+        out = np.concatenate(pieces) if pieces else np.zeros(0, dtype=np.float32)
+        return out, voice.sample_rate
+
+    def stream(
+        self,
+        text: str,
+        lang: LangMode = "auto",
+        speed: float = 1.0,
+        noise_scale: float | None = None,
+    ) -> Iterator[np.ndarray]:
+        """Yield audio sentence by sentence (sentence-level streaming, not intra-sentence).
+
+        The first chunk is ready after the first sentence is synthesized, which keeps time to
+        first audio low for voice agents.
+        """
+        _validate_text(text)
+        from kural_tts.text.segment import split_sentences
+
+        for sentence in split_sentences(text):
+            audio = self._synth_sentence(sentence, lang, speed, noise_scale)
+            if audio.size:
+                yield audio
+
+    def save(self, text: str, path: str | Path, **kwargs) -> Path:
+        """Synthesize ``text`` and write a 16-bit PCM WAV file."""
+        import soundfile as sf
+
+        audio, sr = self.synthesize(text, **kwargs)
+        path = Path(path)
+        sf.write(path, audio, sr, subtype="PCM_16")
+        return path
+
+    # ------------------------------------------------------------------ frontend only
     def normalize(self, text: str, lang: LangMode = "auto") -> list:
         """Run the text frontend only: returns language-tagged, verbalized ``Span`` objects.
 
@@ -80,27 +170,6 @@ class KuralTTS:
         from kural_tts.text.g2p import phonemize
 
         return phonemize(text, lang)
-
-    def stream(self, text: str, lang: LangMode = "auto", **kwargs) -> Iterator[np.ndarray]:
-        """Yield audio sentence by sentence (sentence-level streaming, not intra-sentence)."""
-        _validate_text(text)
-        from kural_tts.text.segment import split_sentences
-
-        for sentence in split_sentences(text):
-            audio, _ = self.synthesize(sentence, lang=lang, **kwargs)
-            yield audio
-
-    def save(self, text: str, path: str | Path, **kwargs) -> Path:
-        """Synthesize ``text`` and write a 16-bit PCM WAV file."""
-        import soundfile as sf
-
-        audio, sr = self.synthesize(text, **kwargs)
-        path = Path(path)
-        sf.write(path, audio, sr, subtype="PCM_16")
-        return path
-
-
-MAX_CHARS = 5000
 
 
 def _validate_text(text: str) -> None:
