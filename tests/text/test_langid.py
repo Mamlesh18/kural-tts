@@ -55,3 +55,8 @@ def test_number_language_from_context():
 
 def test_english_mode_disables_tanglish():
     assert tag("romba nalla", mode="en") == [("romba", "en"), ("nalla", "en")]
+
+
+def test_ambiguous_particle_uses_sentence_level_tanglish():
+    assert tag("naalaikku 10:30 ku meeting, ok ah?")[-1] == ("ஆ", "ta")
+    assert tag("ok ah, see you")[1] == ("ah", "en")  # no Tanglish in the sentence
