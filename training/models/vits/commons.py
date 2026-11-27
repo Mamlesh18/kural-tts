@@ -37,9 +37,10 @@ def get_padding(kernel_size: int, dilation: int = 1) -> int:
     return (kernel_size * dilation - dilation) // 2
 
 
-def sequence_mask(lengths: torch.Tensor, max_length: int | None = None) -> torch.Tensor:
+def sequence_mask(lengths: torch.Tensor, max_length=None) -> torch.Tensor:
+    # max_length stays a tensor when omitted, so ONNX export keeps output length dynamic.
     if max_length is None:
-        max_length = int(lengths.max())
+        max_length = lengths.max()
     x = torch.arange(max_length, dtype=lengths.dtype, device=lengths.device)
     return x.unsqueeze(0) < lengths.unsqueeze(1)
 
