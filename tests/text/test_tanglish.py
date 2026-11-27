@@ -38,6 +38,9 @@ def test_lookup_variants_and_ambiguity():
         ("vandi", "வண்டி"),
         ("antha", "அந்த"),
         ("unga", "உங்க"),
+        ("velachery", "வெலசெரி"),
+        ("ooty", "ஊடி"),
+        ("vaay", "வாய்"),  # after a vowel, y stays ய்
     ],
 )
 def test_rule_transliterate(word, expected):
