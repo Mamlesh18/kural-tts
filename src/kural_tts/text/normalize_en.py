@@ -98,7 +98,8 @@ def verbalize_en(tokens: list[Token], i: int) -> tuple[str, int]:
     if kind == "latin":
         low = raw.lower()
         if low in ABBREVIATIONS and _is_dot(nxt):
-            return ABBREVIATIONS[low], 1
+            word = ABBREVIATIONS[low]
+            return (word.capitalize() if raw[0].isupper() else word), 1
         if low == "no" and _is_dot(nxt) and (after := _next(tokens, i, 2)) and after.is_numeric:
             return "number", 1
         if raw.isupper() and raw.isalpha() and len(raw) >= 2:
