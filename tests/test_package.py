@@ -39,3 +39,12 @@ def test_split_sentences_mixed():
         "நான் Dr. Kumar பேசுறேன்.",
         "Price is 10.5 rupees.",
     ]
+
+
+def test_normalize_works_without_model():
+    spans = KuralTTS().normalize("நாளைக்கு meeting 10 மணிக்கு")
+    assert [(s.text, s.lang) for s in spans] == [
+        ("நாளைக்கு", "ta"),
+        ("meeting", "en"),
+        ("பத்து மணிக்கு", "ta"),
+    ]
