@@ -28,6 +28,7 @@ uv run kural-tts "naalaikku 10:30 ku meeting, ok ah?" --normalize
 
 ```python
 from kural_tts.text import normalize
+
 normalize("Total ₹1,250 ஆகும்")
 # [Span('Total', 'en'), Span('ஆயிரத்து இருநூற்று ஐம்பது ரூபாய் ஆகும்', 'ta')]
 ```
