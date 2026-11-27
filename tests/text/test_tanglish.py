@@ -54,3 +54,9 @@ def test_looks_tanglish():
     assert looks_tanglish("vazhakkam")
     assert not looks_tanglish("meeting")
     assert not looks_tanglish("the")
+
+
+def test_lexicon_distinguishes_yaar_and_yaaru():
+    assert transliterate("yaar") == "யார்"
+    assert transliterate("yaaru") == "யாரு"
+    assert transliterate("kittayum") == "கிட்டயும்"
