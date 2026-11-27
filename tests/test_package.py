@@ -57,3 +57,10 @@ def test_cli_normalize_prints_spans(capsys):
         "[en] wait",
         "[ta] பண்ணுங்க",
     ]
+
+
+def test_phonemize_and_cli_phonemes(capsys):
+    phones = KuralTTS().phonemize("நான் ok")
+    assert phones[0] == ("n̪", "ta") and phones[-1][1] == "en"
+    assert main(["நான் வரேன்", "--phonemes"]) == 0
+    assert capsys.readouterr().out.strip() == "[ta] n̪ aː n | ʋ a ɾ eː n"
