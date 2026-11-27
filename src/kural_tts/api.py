@@ -64,6 +64,16 @@ class KuralTTS:
             "No Kural-TTS model has been released yet. Training is in progress; see docs/PLAN.md."
         )
 
+    def normalize(self, text: str, lang: LangMode = "auto") -> list:
+        """Run the text frontend only: returns language-tagged, verbalized ``Span`` objects.
+
+        Works without a model, so it is useful for checking how text will be read.
+        """
+        _validate_text(text)
+        from kural_tts.text.frontend import normalize
+
+        return normalize(text, lang)
+
     def stream(self, text: str, lang: LangMode = "auto", **kwargs) -> Iterator[np.ndarray]:
         """Yield audio sentence by sentence (sentence-level streaming, not intra-sentence)."""
         _validate_text(text)
