@@ -12,7 +12,8 @@ symbols. `account` + `ல` has no boundary because the suffix is glued to the wo
 
 ```python
 from kural_tts.text import text_to_ids
-ids, lang_ids = text_to_ids("நாளைக்கு meeting 10 மணிக்கு")   # BOS ... EOS, equal lengths
+
+ids, lang_ids = text_to_ids("நாளைக்கு meeting 10 மணிக்கு")  # BOS ... EOS, equal lengths
 ```
 
 ## Symbol inventory (`symbols.py`, version 1, 75 symbols)
