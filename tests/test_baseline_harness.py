@@ -78,3 +78,14 @@ def test_run_adapter_with_fake_model(tmp_path, rows):
     results = [json.loads(x) for x in (out / "results.jsonl").read_text("utf-8").splitlines()]
     ok = [r for r in results if r["status"] == "ok"]
     assert all((out / r["wav"]).exists() and r["audio_sec"] == pytest.approx(1.0) for r in ok)
+
+
+def test_score_reference_uses_tamil_script_for_tanglish():
+    from score import reference_text
+
+    sentences = {r["id"]: r for r in load_sentences()}
+    tg = next(r for r in sentences.values() if r["category"] == "tanglish")
+    row = {"id": tg["id"], "input_text": tg["text"]}
+    assert reference_text(row, sentences) == tg["reference_ta_script"]
+    en = next(r for r in sentences.values() if r["category"] == "en")
+    assert reference_text({"id": en["id"], "input_text": "x"}, sentences) == "x"
