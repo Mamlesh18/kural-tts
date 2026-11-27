@@ -257,6 +257,7 @@ def main(argv: list[str] | None = None) -> Trainer:
     p.add_argument("--device", default="auto")
     p.add_argument("--init-from", help="Warm-start weights from a checkpoint (new run only).")
     p.add_argument("--max-steps", type=int, help="Override train.max_steps.")
+    p.add_argument("--batch-size", type=int, help="Override train.batch_size (T4: 8, A100: 32).")
     p.add_argument("--train-manifest")
     p.add_argument("--val-manifest")
     p.add_argument("--audio-root")
@@ -268,7 +269,11 @@ def main(argv: list[str] | None = None) -> Trainer:
         "val_manifest": args.val_manifest,
         "audio_root": args.audio_root,
     }.items() if v is not None}  # fmt: skip
-    train_over = {"max_steps": args.max_steps} if args.max_steps is not None else {}
+    train_over = {
+        k: v
+        for k, v in {"max_steps": args.max_steps, "batch_size": args.batch_size}.items()
+        if v is not None
+    }
     cfg = load_config(args.config, {"data": data_over, "train": train_over})
 
     run_dir = Path(args.run_dir)
