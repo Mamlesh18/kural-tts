@@ -52,6 +52,8 @@ dev = [
     "ruff>=0.6",
     "pre-commit>=3.7",
     "pip-licenses>=4.4",
+    "fastapi>=0.110",
+    "httpx>=0.27",
 ]
 data = [
     "librosa>=0.10",
