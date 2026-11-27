@@ -10,10 +10,10 @@ dist/
 .ipynb_checkpoints/
 
 # Private / large artifacts — never commit voice data or weights
-data/
-checkpoints/
-logs/
-outputs/
+/data/
+/checkpoints/
+/logs/
+/outputs/
 *.wav
 *.flac
 *.mp3
