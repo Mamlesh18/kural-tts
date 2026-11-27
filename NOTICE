@@ -4,8 +4,9 @@ Copyright 2026 Kural-TTS contributors
 This product's source code is licensed under the Apache License, Version 2.0 (see LICENSE).
 
 Model weights are distributed separately under their own license (see docs/MODEL_CARD.md once released).
-Files under training/ adapted from third-party projects (e.g. coqui-tts, MPL-2.0) keep their original
-license headers; this will be listed here as such files are added.
+The Kural-VITS model in training/models/vits/ follows the architecture of VITS
+(Kim, Kong & Son, 2021) and its reference implementation https://github.com/jaywalnut310/vits,
+Copyright (c) 2021 Jaehyeon Kim, MIT License.
 
 Third-party data shipped in the package:
 - src/kural_tts/data/lexicon/cmudict.tsv.gz is derived from the CMU Pronouncing Dictionary,
