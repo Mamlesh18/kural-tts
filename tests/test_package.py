@@ -48,3 +48,12 @@ def test_normalize_works_without_model():
         ("meeting", "en"),
         ("பத்து மணிக்கு", "ta"),
     ]
+
+
+def test_cli_normalize_prints_spans(capsys):
+    assert main(["konjam wait pannunga", "--normalize"]) == 0
+    assert capsys.readouterr().out.splitlines() == [
+        "[ta] கொஞ்சம்",
+        "[en] wait",
+        "[ta] பண்ணுங்க",
+    ]
