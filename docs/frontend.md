@@ -65,10 +65,10 @@ normalize("Total ₹1,250 ஆகும்")
 2. The lexicon has about 270 spellings. It needs to grow to about 5k colloquial forms with native review.
 3. Tanglish accusative `-ah` is rendered as ஆ (`password ah` → passwordஆ). That matches casual speech,
    but the formal reference is -ஐ.
-4. English words with Tamil suffixes become two spans (`office` + `க்கு`). G2P must join them across
-   the boundary without a pause.
-5. Brand and mixed-case tokens (`GPay`, `iPhone`) are passed through unchanged. An English
-   pronunciation lexicon comes with G2P.
+4. ~~English words with Tamil suffixes become two spans.~~ Resolved: spans carry `joined`, and G2P
+   emits no word boundary between `office` and `க்கு` (see [g2p.md](g2p.md)).
+5. Brand and mixed-case tokens (`GPay`, `iPhone`) are passed through unchanged. G2P looks them up
+   in CMUdict and falls back to the Tamil route.
 6. Tamil numerals ௰ ௱ ௲ are not converted.
 7. The measured Tanglish accuracy of 99.1% (`scripts/frontend/eval_tanglish.py`) is **optimistic**,
    because the lexicon and the feasibility sentences have the same author. The Phase 5 exit criterion
