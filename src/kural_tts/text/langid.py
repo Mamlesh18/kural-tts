@@ -46,10 +46,30 @@ def _context_score(labels: list[str | None], tokens: list[Token], i: int) -> flo
     return score
 
 
+def split_hyphen_particles(tokens: list[Token]) -> list[Token]:
+    """'account-la' -> [account, la(attached)] when the tail is a Tanglish particle."""
+    out: list[Token] = []
+    for tok in tokens:
+        head, sep, tail = tok.text.rpartition("-")
+        if tok.kind == "latin" and sep and head and tail.lower() in ATTACHING_PARTICLES:
+            out.append(Token(head, "latin", space_before=tok.space_before))
+            out.append(Token(tail, "latin", attached=True))
+        else:
+            out.append(tok)
+    return out
+
+
 def assign_languages(tokens: list[Token], mode: LangMode = "auto") -> list[Token]:
+    if mode != "en":
+        tokens = split_hyphen_particles(tokens)
     labels: list[str | None] = [_classify_latin(t) if t.kind == "latin" else None for t in tokens]
     if mode == "en":
         labels = [_EN if lab else None for lab in labels]
+    # A particle glued with a hyphen ("account-la") is Tamil regardless of context.
+    labels = [
+        _STRONG if t.attached and t.kind == "latin" else lab
+        for t, lab in zip(tokens, labels, strict=True)
+    ]
 
     has_strong = _STRONG in labels
     for i in range(len(tokens)):
