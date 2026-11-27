@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kural-tts"
+version = "0.0.1.dev0"
+description = "Open-source bilingual Tamil-English (and Tanglish) text-to-speech with the Sahithi voice. Runs locally on CPU or GPU."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Kural-TTS contributors" }]
+keywords = ["tts", "text-to-speech", "tamil", "tanglish", "code-switching", "speech-synthesis", "onnx"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Natural Language :: Tamil",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+# Runtime deps must stay small, cross-platform and commercially redistributable (no GPL).
+dependencies = [
+    "numpy>=1.24",
+    "soundfile>=0.12",
+    "onnxruntime>=1.17",
+    "huggingface_hub>=0.23",
+]
+
+[project.optional-dependencies]
+gpu = ["onnxruntime-gpu>=1.17"]
+server = ["fastapi>=0.110", "uvicorn[standard]>=0.29"]
+agents = ["livekit-agents>=1.0"]
+
+[project.scripts]
+kural-tts = "kural_tts.cli:main"
+
+[project.urls]
+Documentation = "https://github.com/Mamlesh18/kural-tts/tree/main/docs"
+Source = "https://github.com/Mamlesh18/kural-tts"
+
+# Development / training tooling lives in dependency groups (never shipped to users).
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "pre-commit>=3.7",
+    "pip-licenses>=4.4",
+]
+data = [
+    "librosa>=0.10",
+    "pyloudnorm>=0.1.1",
+    "pyyaml>=6",
+    "tqdm>=4.66",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kural_tts"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/kural_tts", "tests", "README.md", "LICENSE", "NOTICE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "training", "tests"]
+extend-exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+ignore = ["RUF001", "RUF002", "RUF003"]  # Tamil/IPA characters are intentional
