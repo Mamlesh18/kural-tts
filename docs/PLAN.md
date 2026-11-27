@@ -28,7 +28,8 @@
 | 3. Baseline runners, scoring, listening test, Colab notebook | ✅ code done, ⏳ run on Colab | `scripts/baseline/`, `notebooks/01_baselines.ipynb` |
 | 4. Frontend v0: normalization, Tamil/English numbers, LID, Tanglish | ✅ done (v0) | `src/kural_tts/text/`, `docs/frontend.md` |
 | 5. Talent call and consent contract | ⏳ owner: you + lawyer | Phase 2 |
-| Next: G2P (Tamil rules + English lexicon), recording script generator | 🔜 | Phase 5 / Phase 3 |
+| 6. G2P v0: Tamil rules, CMUdict English, frozen symbol inventory, model input ids | ✅ done (v0), ⏳ native review | `src/kural_tts/text/g2p*.py`, `docs/g2p.md` |
+| Next: recording script generator (coverage-based sentence selection) | 🔜 | Phase 3 |
 
 ---
 
