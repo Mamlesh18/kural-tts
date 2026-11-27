@@ -86,3 +86,18 @@ def test_incompatible_symbols_version_is_rejected(bundle, tmp_path):
     (bad / "config.json").write_text(json.dumps({**cfg, "symbols_version": 999}), "utf-8")
     with pytest.raises(IncompatibleModelError):
         OnnxVoice(bad)
+
+
+def test_render_eval_set_matches_baseline_format(bundle, tmp_path):
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "scripts" / "eval"))
+    from render_eval_set import main as render
+
+    out = render(["--model", str(bundle), "--name", "kural_tiny", "--out-root", str(tmp_path)])
+    assert out.name == "kural_tiny__cpu"
+    meta = json.loads((out / "meta.json").read_text(encoding="utf-8"))
+    assert meta["n_ok"] == 80 and meta["n_error"] == 0
+    rows = [json.loads(x) for x in (out / "results.jsonl").read_text("utf-8").splitlines()]
+    tanglish = next(r for r in rows if r["category"] == "tanglish")
+    assert tanglish["input_text"].isascii()  # Kural was given the raw Tanglish
