@@ -6,3 +6,8 @@ This product's source code is licensed under the Apache License, Version 2.0 (se
 Model weights are distributed separately under their own license (see docs/MODEL_CARD.md once released).
 Files under training/ adapted from third-party projects (e.g. coqui-tts, MPL-2.0) keep their original
 license headers; this will be listed here as such files are added.
+
+Third-party data shipped in the package:
+- src/kural_tts/data/lexicon/cmudict.tsv.gz is derived from the CMU Pronouncing Dictionary,
+  Copyright (C) 1993-2015 Carnegie Mellon University, BSD-2-Clause-style license
+  (see src/kural_tts/data/lexicon/CMUDICT_LICENSE.txt).
