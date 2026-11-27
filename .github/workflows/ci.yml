@@ -49,3 +49,20 @@ jobs:
         run: |
           uv pip install --python /tmp/clean pip-licenses
           /tmp/clean/bin/pip-licenses --packages numpy soundfile onnxruntime huggingface-hub --fail-on="GNU General Public License v3 (GPLv3);GNU General Public License v2 (GPLv2)"
+
+  training-and-integrations:
+    # Model, training smoke test, ONNX export/runtime, data pipeline, server and LiveKit plugin.
+    # CPU-only PyTorch keeps the job small; no GPU is needed for the tiny test model.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.11"
+      - name: Install CPU PyTorch and training/integration dependencies
+        run: |
+          uv venv
+          uv pip install --index-url https://download.pytorch.org/whl/cpu torch
+          uv pip install -e . librosa pyloudnorm pyyaml tensorboard onnx \
+            pytest fastapi httpx "livekit-agents>=1.0"
+      - run: .venv/bin/python -m pytest
