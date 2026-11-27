@@ -99,8 +99,14 @@ def _resolve_n(units: list[tuple[str, str]]) -> list[tuple[str, str]]:
     return out
 
 
+_VOWEL_LETTERS = frozenset("aeiou")
+
+
 def rule_transliterate(word: str) -> str:
-    units = _resolve_n(_parse(word.lower()))
+    word = word.lower()
+    if len(word) > 2 and word.endswith("y") and word[-2] not in _VOWEL_LETTERS:
+        word = word[:-1] + "i"  # Velachery, Ooty: final -y is a vowel, not ய்
+    units = _resolve_n(_parse(word))
     out: list[str] = []
     for idx, (kind, t) in enumerate(units):
         prev_kind = units[idx - 1][0] if idx else None
