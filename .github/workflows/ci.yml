@@ -43,6 +43,8 @@ jobs:
           /tmp/clean/bin/kural-tts --version
           # Exercises packaged data (Tanglish lexicon) from the installed wheel.
           /tmp/clean/bin/kural-tts "vanakkam, naan 10 mani ku varen" --normalize
+          # Exercises the packaged CMUdict lexicon and the full G2P path.
+          /tmp/clean/bin/kural-tts "Your OTP for Velachery-la order is 4521" --phonemes
       - name: Runtime dependency license check (no GPL in the shipped package)
         run: |
           uv pip install --python /tmp/clean pip-licenses
