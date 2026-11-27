@@ -63,7 +63,12 @@ def assign_languages(tokens: list[Token], mode: LangMode = "auto") -> list[Token
         elif tok.kind == "latin":
             if labels[i] == _STRONG:
                 tok.source, tok.lang = "tanglish", "ta"
-                if tok.text.lower() in ATTACHING_PARTICLES and i > 0 and tokens[i - 1].is_word:
+                prev = tokens[i - 1] if i > 0 else None
+                if (
+                    tok.text.lower() in ATTACHING_PARTICLES
+                    and prev
+                    and (prev.is_word or prev.is_numeric)
+                ):
                     tok.attached = True
                 tok.text = transliterate(tok.text)
                 tok.kind = "ta"
