@@ -19,6 +19,19 @@
 
 ---
 
+## Progress
+
+| Step | Status | Where |
+|---|---|---|
+| 1. Repo and package scaffold, multi-OS CI | ✅ done | `pyproject.toml`, `src/kural_tts/`, `.github/workflows/ci.yml` |
+| 2. Feasibility sentence set (80: EN/TA/CS/Tanglish) | ✅ drafted, ⏳ native review | `eval/sentences/feasibility_v1.tsv` |
+| 3. Baseline runners, scoring, listening test, Colab notebook | ✅ code done, ⏳ run on Colab | `scripts/baseline/`, `notebooks/01_baselines.ipynb` |
+| 4. Frontend v0: normalization, Tamil/English numbers, LID, Tanglish | ✅ done (v0) | `src/kural_tts/text/`, `docs/frontend.md` |
+| 5. Talent call and consent contract | ⏳ owner: you + lawyer | Phase 2 |
+| Next: G2P (Tamil rules + English lexicon), recording script generator | 🔜 | Phase 5 / Phase 3 |
+
+---
+
 ## 0. Executive summary
 
 | Decision | Recommendation | Why |
