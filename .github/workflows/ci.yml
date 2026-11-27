@@ -41,6 +41,8 @@ jobs:
           uv venv /tmp/clean
           uv pip install --python /tmp/clean dist/*.whl
           /tmp/clean/bin/kural-tts --version
+          # Exercises packaged data (Tanglish lexicon) from the installed wheel.
+          /tmp/clean/bin/kural-tts "vanakkam, naan 10 mani ku varen" --normalize
       - name: Runtime dependency license check (no GPL in the shipped package)
         run: |
           uv pip install --python /tmp/clean pip-licenses
