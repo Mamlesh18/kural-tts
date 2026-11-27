@@ -32,7 +32,27 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
+def serve_main(argv: list[str]) -> int:
+    p = argparse.ArgumentParser(prog="kural-tts serve", description="Run the local TTS server.")
+    p.add_argument("--model", help="Voice directory with model.onnx + config.json.")
+    p.add_argument("--host", default="127.0.0.1")
+    p.add_argument("--port", type=int, default=8765)
+    p.add_argument("--device", choices=["auto", "cpu", "cuda"], default="auto")
+    p.add_argument("--max-concurrency", type=int, default=2)
+    args = p.parse_args(argv)
+    try:
+        from kural_tts.server.app import serve
+    except ImportError:
+        print('error: install the server extra: pip install "kural-tts[server]"', file=sys.stderr)
+        return 1
+    serve(args.model, args.host, args.port, args.device, args.max_concurrency)
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else argv
+    if argv[:1] == ["serve"]:
+        return serve_main(argv[1:])
     args = build_parser().parse_args(argv)
     if args.file:
         with open(args.file, encoding="utf-8") as f:
