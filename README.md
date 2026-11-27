@@ -3,7 +3,10 @@
 Open-source text-to-speech for **Tamil, English, Tamil-English code-switching and Tanglish**, in one
 consistent female voice: **Sahithi**. Runs locally on CPU (ONNX Runtime) or GPU.
 
-> **Status: pre-alpha.** No model has been released yet. See [docs/PLAN.md](docs/PLAN.md) for the roadmap.
+> **Status: pre-alpha.** The full pipeline is implemented and tested end to end: text frontend,
+> model, training, ONNX export, runtime, server and LiveKit plugin. **The Sahithi voice has not been
+> recorded or trained yet**, so `KuralTTS()` has nothing to download. Until then, train your own
+> with the runbook or pass a local `model_path`. See [docs/PLAN.md](docs/PLAN.md).
 
 ## Planned usage
 
@@ -49,12 +52,22 @@ uv run kural-tts "Sir, unga account-la KYC update pannunga" --phonemes
 
 See [docs/frontend.md](docs/frontend.md) and [docs/g2p.md](docs/g2p.md) for details and known limitations.
 
+## Documentation
+
+| Doc | What's in it |
+|---|---|
+| [docs/PLAN.md](docs/PLAN.md) | Research, decisions, phased plan, progress |
+| [docs/training.md](docs/training.md) | **Runbook**: script → record → dataset → train on Colab → export → evaluate → publish |
+| [recording/README.md](recording/README.md) | Sentence pools, studio setup, session workflow |
+| [docs/frontend.md](docs/frontend.md), [docs/g2p.md](docs/g2p.md) | Text normalization, Tanglish, pronunciation |
+| [docs/voice-agents.md](docs/voice-agents.md) | In-process streaming, LiveKit plugin, local server |
+
 ## Repository layout
 
 | Path | Contents |
 |---|---|
-| `src/kural_tts/` | The installable package (runtime + text frontend) |
-| `training/` | Data pipeline, model training, evaluation, ONNX export (not shipped) |
+| `src/kural_tts/` | The installable package: text frontend, ONNX runtime, CLI, server, LiveKit plugin |
+| `training/` | Kural-VITS model, data pipeline, trainer, ONNX export (not shipped) |
 | `notebooks/` | Google Colab notebooks for baselines, training, evaluation |
 | `recording/` | Recording scripts, recording app, consent templates |
 | `eval/sentences/` | Frozen evaluation sentence sets (never used for training) |
