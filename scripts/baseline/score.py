@@ -28,7 +28,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from common import DEFAULT_OUT, REPO_ROOT, cer, wer
+from common import DEFAULT_OUT, REPO_ROOT, cer, load_sentences, wer
 
 
 class ASR:
@@ -85,12 +85,21 @@ class ASR:
         return str(self._indic(self._load_audio_16k(path), "ta", "ctc")).strip()
 
 
-def reference_text(row: dict) -> str:
-    return row["input_text"]  # exactly what the model was asked to say
+def reference_text(row: dict, sentences: dict[str, dict] | None = None) -> str:
+    """What the clip should contain, in the script ASR transcribes into.
+
+    Tanglish rows are scored against the reviewed Tamil-script reference, because ASR outputs
+    Tamil script whether the model read the raw Tanglish (Kural) or the reference (baselines).
+    """
+    src = (sentences or {}).get(row["id"])
+    if src and src["category"] == "tanglish" and src.get("reference_ta_script"):
+        return src["reference_ta_script"]
+    return row["input_text"]
 
 
 def score_dir(run_dir: Path, asr: ASR, utmos_model=None) -> list[dict]:
     rows = [json.loads(line) for line in (run_dir / "results.jsonl").open(encoding="utf-8")]
+    sentences = {r["id"]: r for r in load_sentences()}
     scored = []
     for r in rows:
         if r["status"] != "ok":
@@ -103,7 +112,7 @@ def score_dir(run_dir: Path, asr: ASR, utmos_model=None) -> list[dict]:
         else:
             r["asr_text"] = asr.tamil(wav)
             r["asr_model"] = asr.indic_name
-        ref = reference_text(r)
+        ref = reference_text(r, sentences)
         r["cer"] = round(cer(ref, r["asr_text"]), 4)
         r["wer"] = round(wer(ref, r["asr_text"]), 4)
         if utmos_model is not None and r["category"] == "en":
