@@ -1,0 +1,41 @@
+import pytest
+
+import kural_tts
+from kural_tts.api import KuralTTS, ModelNotAvailableError
+from kural_tts.cli import main
+from kural_tts.text.segment import split_sentences
+
+
+def test_version_exposed():
+    assert isinstance(kural_tts.__version__, str)
+
+
+def test_unknown_voice_rejected():
+    with pytest.raises(ValueError):
+        KuralTTS(voice="nobody")
+
+
+@pytest.mark.parametrize("bad", ["", "   "])
+def test_empty_text_rejected(bad):
+    with pytest.raises(ValueError):
+        KuralTTS().synthesize(bad)
+
+
+def test_synthesize_reports_missing_model():
+    with pytest.raises(ModelNotAvailableError):
+        KuralTTS().synthesize("வணக்கம்")
+
+
+def test_cli_without_model_exits_nonzero(tmp_path, capsys):
+    assert main(["hello", "-o", str(tmp_path / "x.wav")]) == 1
+    assert "No Kural-TTS model" in capsys.readouterr().err
+
+
+def test_split_sentences_mixed():
+    text = "வணக்கம்! How are you? நான் Dr. Kumar பேசுறேன். Price is 10.5 rupees."
+    assert split_sentences(text) == [
+        "வணக்கம்!",
+        "How are you?",
+        "நான் Dr. Kumar பேசுறேன்.",
+        "Price is 10.5 rupees.",
+    ]
