@@ -40,7 +40,14 @@ normalize("Total ₹1,250 ஆகும்")
 # [Span('Total', 'en'), Span('ஆயிரத்து இருநூற்று ஐம்பது ரூபாய் ஆகும்', 'ta')]
 ```
 
-See [docs/frontend.md](docs/frontend.md) for the pipeline and known limitations.
+Inspect exactly what the model will receive, as phonemes with a language tag on each:
+
+```bash
+uv run kural-tts "Sir, unga account-la KYC update pannunga" --phonemes
+[en] s ˈ ɝ , [ta] u ŋ ɡ a | [en] ə k ˈ aʊ n t [ta] l a | [en] k ˈ eɪ | w ˈ aɪ | s ˈ i | ...
+```
+
+See [docs/frontend.md](docs/frontend.md) and [docs/g2p.md](docs/g2p.md) for details and known limitations.
 
 ## Repository layout
 
