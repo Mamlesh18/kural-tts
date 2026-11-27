@@ -59,6 +59,19 @@ data = [
     "pyyaml>=6",
     "tqdm>=4.66",
 ]
+# Model training / export (Colab or a local GPU box). Never shipped to package users.
+train = [
+    "torch>=2.4",
+    "librosa>=0.10",
+    "pyyaml>=6",
+    "tensorboard>=2.16",
+    "onnx>=1.16",
+    "tqdm>=4.66",
+]
+# Recording sessions (Phase 3): terminal recorder.
+record = [
+    "sounddevice>=0.4.7",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/kural_tts"]
