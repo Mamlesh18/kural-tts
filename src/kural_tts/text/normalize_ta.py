@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from kural_tts.text.normalize_en import split_currency
 from kural_tts.text.numbers_ta import attach_suffix, decimal_to_ta, digits_to_ta, int_to_ta
+from kural_tts.text.tamil_script import attach_vowel
 from kural_tts.text.tokenize import Token
 
 # Abbreviation (without its dot) -> spoken form. Only expanded when followed by ".".
@@ -28,9 +29,17 @@ def _currency(raw: str) -> str:
     return f"{words} {int_to_ta(sub)} {sub_unit}" if sub else words
 
 
+HALF = "அரை"
+
+
 def _time(raw: str) -> str:
+    """'9:00' -> ஒன்பது, '10:30' -> பத்தரை (spoken half-hour), '10:45' -> பத்து நாற்பத்தைந்து."""
     h, m = (int(x) for x in raw.split(":"))
-    return int_to_ta(h) if m == 0 else f"{int_to_ta(h)} {int_to_ta(m)}"
+    if m == 0:
+        return int_to_ta(h)
+    if m == 30:
+        return attach_vowel(int_to_ta(h), HALF)
+    return f"{int_to_ta(h)} {int_to_ta(m)}"
 
 
 def _spoken_number(tok: Token) -> str:
