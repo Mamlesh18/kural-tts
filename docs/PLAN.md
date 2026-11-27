@@ -29,7 +29,13 @@
 | 4. Frontend v0: normalization, Tamil/English numbers, LID, Tanglish | ✅ done (v0) | `src/kural_tts/text/`, `docs/frontend.md` |
 | 5. Talent call and consent contract | ⏳ owner: you + lawyer | Phase 2 |
 | 6. G2P v0: Tamil rules, CMUdict English, frozen symbol inventory, model input ids | ✅ done (v0), ⏳ native review | `src/kural_tts/text/g2p*.py`, `docs/g2p.md` |
-| Next: recording script generator (coverage-based sentence selection) | 🔜 | Phase 3 |
+| 7. Recording tools: coverage-greedy script generator (with spoken-form `say` column), number/date templates, terminal recorder, consent template | ✅ done | `recording/` |
+| 8. Data pipeline: QC, trimming, loudness, best take, dedupe, eval exclusion, stable splits | ✅ done | `training/data_pipeline/` |
+| 9. Kural-VITS model (per-phoneme language embeddings), trainer with auto-resume, Colab notebook | ✅ done, CPU smoke-tested | `training/`, `notebooks/02_train_kural_vits.ipynb` |
+| 10. ONNX export with parity check, package runtime (`synthesize`/`stream`), CLI | ✅ done | `training/export_onnx.py`, `src/kural_tts/runtime/` |
+| 11. Local server (HTTP + streaming WS + barge-in), LiveKit plugin | ✅ done | `src/kural_tts/server/`, `src/kural_tts/integrations/` |
+| 12. Eval rendering in baseline format, release script, model card | ✅ done | `scripts/eval/`, `scripts/release/`, `docs/MODEL_CARD.md` |
+| **Blocked on people, not code:** voice talent + consent, sentence pools, 1 h pilot recording, Colab runs, native review | ⏳ you | Phases 1–3 |
 
 ---
 
