@@ -74,6 +74,13 @@ class KuralTTS:
 
         return normalize(text, lang)
 
+    def phonemize(self, text: str, lang: LangMode = "auto") -> list[tuple[str, str]]:
+        """Return the model input as ``[(phoneme, lang), ...]``. Works without a model."""
+        _validate_text(text)
+        from kural_tts.text.g2p import phonemize
+
+        return phonemize(text, lang)
+
     def stream(self, text: str, lang: LangMode = "auto", **kwargs) -> Iterator[np.ndarray]:
         """Yield audio sentence by sentence (sentence-level streaming, not intra-sentence)."""
         _validate_text(text)
