@@ -9,7 +9,7 @@ from pathlib import Path
 # Filled in at first model release. Pinned per package version for reproducibility.
 HF_REPO_ID = "kural-tts/kural-tts-sahithi"
 HF_REVISION: str | None = None
-MODEL_FILES: dict[str, str] = {}  # filename -> sha256
+MODEL_FILES: dict[str, str] = {}  # {"model.onnx": sha256, "config.json": sha256} at release
 
 
 def cache_dir() -> Path:
