@@ -60,3 +60,15 @@ def test_english_mode_disables_tanglish():
 def test_ambiguous_particle_uses_sentence_level_tanglish():
     assert tag("naalaikku 10:30 ku meeting, ok ah?")[-1] == ("ஆ", "ta")
     assert tag("ok ah, see you")[1] == ("ah", "en")  # no Tanglish in the sentence
+
+
+def test_hyphenated_tanglish_particle_is_split_and_attached():
+    toks = [t for t in assign_languages(tokenize("unga account-la KYC")) if t.lang]
+    assert [(t.text, t.lang, t.attached) for t in toks] == [
+        ("உங்க", "ta", False),
+        ("account", "en", False),
+        ("ல", "ta", True),
+        ("KYC", "en", False),
+    ]
+    # Ordinary hyphenated English words are untouched.
+    assert tag("passport-size photo")[0] == ("passport-size", "en")
