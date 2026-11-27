@@ -20,6 +20,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Only run the text frontend and print language-tagged spans (no audio).",
     )
+    p.add_argument(
+        "--phonemes",
+        action="store_true",
+        help="Print the phoneme sequence the model receives (no audio).",
+    )
     p.add_argument("--version", action="version", version=f"kural-tts {__version__}")
     return p
 
@@ -40,6 +45,12 @@ def main(argv: list[str] | None = None) -> int:
     if args.normalize:
         _print_spans(KuralTTS().normalize(text, lang=args.lang))
         return 0
+    if args.phonemes:
+        from kural_tts.text.g2p import format_phones
+
+        _utf8_stdout()
+        print(format_phones(KuralTTS().phonemize(text, lang=args.lang)))
+        return 0
 
     try:
         path = KuralTTS().save(text, args.output, lang=args.lang, speed=args.speed)
@@ -50,9 +61,13 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def _print_spans(spans) -> None:
+def _utf8_stdout() -> None:
     if hasattr(sys.stdout, "reconfigure"):  # Windows consoles default to a legacy code page
         sys.stdout.reconfigure(encoding="utf-8")
+
+
+def _print_spans(spans) -> None:
+    _utf8_stdout()
     for span in spans:
         print(f"[{span.lang}] {span.text}")
 
