@@ -15,6 +15,9 @@ LangMode = Literal["auto", "ta", "en"]
 
 _STRONG, _WEAK, _EN, _AMBIG = "strong", "weak", "en", "ambiguous"
 _WINDOW = 3
+# In a sentence that already has unambiguous Tanglish, an ambiguous word stays Tanglish unless
+# its neighbours are clearly English (e.g. "meeting, ok ah?" -> ah is the Tamil particle ஆ).
+_AMBIG_TOLERANCE = -1.5
 _SENTENCE_END = frozenset(".?!")
 
 
@@ -52,9 +55,14 @@ def assign_languages(tokens: list[Token], mode: LangMode = "auto") -> list[Token
     for i in range(len(tokens)):
         if labels[i] in (_AMBIG, _WEAK):
             score = _context_score(labels, tokens, i)
-            tanglish = score > 0 or (score == 0 and (has_strong or mode == "ta"))
-            if labels[i] == _WEAK:  # unknown words need positive evidence
+            if labels[i] == _WEAK:  # unknown words need positive local evidence
                 tanglish = score > 0 and has_strong
+            else:  # lexicon words that are also English: lean on the sentence when it is Tanglish
+                tanglish = (
+                    score > 0
+                    or (has_strong and score > _AMBIG_TOLERANCE)
+                    or (mode == "ta" and score >= 0)
+                )
             labels[i] = _STRONG if tanglish else _EN
 
     for i, tok in enumerate(tokens):
