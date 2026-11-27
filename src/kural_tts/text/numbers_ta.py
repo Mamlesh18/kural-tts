@@ -100,7 +100,7 @@ def int_to_ta(n: int) -> str:
     if rest:
         tail = _below_1000(rest)
         if parts:
-            return " ".join(parts[:-1] + [_join(parts[-1], tail)]).strip()
+            return " ".join([*parts[:-1], _join(parts[-1], tail)])
         return tail
     return " ".join(parts)
 
