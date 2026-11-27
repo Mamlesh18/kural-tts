@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Private / large artifacts — never commit voice data or weights
+data/
+checkpoints/
+logs/
+outputs/
+*.wav
+*.flac
+*.mp3
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+!tests/fixtures/**
+
+# Secrets / local env
+.env
+.env.*
+!.env.example
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
