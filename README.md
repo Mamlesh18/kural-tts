@@ -21,6 +21,26 @@ for chunk in tts.stream(long_text):  # sentence-level streaming
     play(chunk)
 ```
 
+## Try the text frontend today
+
+The model isn't trained yet, but the bilingual text frontend already works. It handles numbers,
+currency, dates, abbreviations, code-switching and Tanglish:
+
+```bash
+uv run kural-tts "naalaikku 10:30 ku meeting, ok ah?" --normalize
+[ta] நாளைக்கு பத்தரைக்கு
+[en] meeting, ok
+[ta] ஆ?
+```
+
+```python
+from kural_tts.text import normalize
+normalize("Total ₹1,250 ஆகும்")
+# [Span('Total', 'en'), Span('ஆயிரத்து இருநூற்று ஐம்பது ரூபாய் ஆகும்', 'ta')]
+```
+
+See [docs/frontend.md](docs/frontend.md) for the pipeline and known limitations.
+
 ## Repository layout
 
 | Path | Contents |
