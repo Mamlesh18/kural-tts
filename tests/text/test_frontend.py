@@ -53,3 +53,12 @@ def test_spans_never_mix_scripts():
 
 def test_tanglish_particle_attaches_to_number():
     assert normalize("naalaikku 10:30 ku varen")[0] == Span("நாளைக்கு பத்தரைக்கு வரேன்", "ta")
+
+
+def test_spans_mark_glued_suffixes():
+    spans = normalize("நான் office-ல இருக்கேன்")
+    assert spans == [
+        Span("நான்", "ta"),
+        Span("office", "en"),
+        Span("ல இருக்கேன்", "ta", joined=True),
+    ]
